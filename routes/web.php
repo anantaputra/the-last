@@ -1,11 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Pages\HomeController;
-use App\Http\Controllers\Auth\GoogleController;
-use App\Http\Controllers\User\ProfilController;
-use App\Http\Controllers\Pages\KontakController;
-use App\Http\Controllers\Pages\ProdukController;
 
 /*
 |--------------------------------------------------------------------------
