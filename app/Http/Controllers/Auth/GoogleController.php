@@ -37,7 +37,7 @@ class GoogleController extends Controller
             $id = 'USR-' . sprintf("%05s", $urutan);
 
             $new_user = new User();
-            $new_user->id = $id;
+            $new_user->id_user = $id;
             $new_user->firstname = $user->name;
             $new_user->email = $user->email;
             $new_user->password = Str::random(10);
