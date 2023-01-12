@@ -19,37 +19,37 @@ class GoogleController extends Controller
 
     public function handleGoogleCallback()
     {
-        $user = Socialite::driver('google')->user();
-        $check_user = User::where('email', $user->email)->first();
-        
-        if($check_user){
-            Auth::login($check_user);
-            return redirect()->intended('/');
-        } else {
-            $usr = User::latest()->first();
-            if($usr){
-                $id = explode('-', $usr->id_user);
-                $urutan = (int) $id[1];
-                $urutan++;
+        try {
+            $user = Socialite::driver('google')->user();
+            $check_user = User::where('email', $user->email)->first();
+            
+            if($check_user){
+                Auth::login($check_user);
+                return redirect()->route('home');
             } else {
-                $urutan = 1;
+                $usr = User::latest()->first();
+                if($usr){
+                    $id = explode('-', $usr->id_user);
+                    $urutan = (int) $id[1];
+                    $urutan++;
+                } else {
+                    $urutan = 1;
+                }
+                $id = 'USR-' . sprintf("%04s", $urutan);
+    
+                $new_user = new User();
+                $new_user->id_user = $id;
+                $new_user->nama_depan = $user->name;
+                $new_user->email = $user->email;
+                $new_user->password = Str::random(10);
+                $new_user->save();
+    
+                Auth::login($new_user);
+                return redirect()->route('home');
             }
-            $id = 'USR-' . sprintf("%04s", $urutan);
-
-            $new_user = new User();
-            $new_user->id_user = $id;
-            $new_user->nama_depan = $user->name;
-            $new_user->email = $user->email;
-            $new_user->password = Str::random(10);
-            $new_user->save();
-
-            Auth::login($new_user);
-            return redirect()->intended('/');
+        } catch (Exception $e) {
+            // dd($e->getMessage());
+            return redirect()->route('login')->withErrors(['failed' => 'Google Authentication Error! Silahkan Coba beberapa saat lagi']);
         }
-        // try {
-        // } catch (Exception $e) {
-        //     dd($e->getMessage());
-        //     // return redirect()->back();
-        // }
     }
 }
