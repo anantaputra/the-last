@@ -24,7 +24,7 @@ class GoogleController extends Controller
             $check_user = User::where('email', $user->email)->first();
             if($check_user){
                 Auth::login($check_user);
-                return redirect()->route('home');
+                return redirect()->intended('/');
             } else {
                 $usr = User::latest()->first();
                 if($usr){
@@ -44,7 +44,7 @@ class GoogleController extends Controller
                 $new_user->save();
 
                 Auth::login($new_user);
-                return redirect()->route('home');
+                return redirect()->intended('/');
             }
         } catch (Exception $e) {
             // dd($e->getMessage());
