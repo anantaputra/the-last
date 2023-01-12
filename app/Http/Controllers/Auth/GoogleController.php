@@ -19,36 +19,36 @@ class GoogleController extends Controller
 
     public function handleGoogleCallback()
     {
-        try {
-            $user = Socialite::driver('google')->user();
-            $check_user = User::where('email', $user->email)->first();
-            if($check_user){
-                Auth::login($check_user);
-                return redirect()->intended('/');
+        $user = Socialite::driver('google')->user();
+        $check_user = User::where('email', $user->email)->first();
+        if($check_user){
+            Auth::login($check_user);
+            return redirect()->intended('/');
+        } else {
+            $usr = User::latest()->first();
+            if($usr){
+                $id = explode('-', $user->id_user);
+                $urutan = (int) $id[1];
+                $urutan++;
             } else {
-                $usr = User::latest()->first();
-                if($usr){
-                    $id = explode('-', $user->id_user);
-                    $urutan = (int) $id[1];
-                    $urutan++;
-                } else {
-                    $urutan = 1;
-                }
-                $id = 'USR-' . sprintf("%05s", $urutan);
-
-                $new_user = new User();
-                $new_user->id = $id;
-                $new_user->firstname = $user->name;
-                $new_user->email = $user->email;
-                $new_user->password = Str::random(10);
-                $new_user->save();
-
-                Auth::login($new_user);
-                return redirect()->intended('/');
+                $urutan = 1;
             }
-        } catch (Exception $e) {
-            dd($e->getMessage());
-            // return redirect()->back();
+            $id = 'USR-' . sprintf("%05s", $urutan);
+
+            $new_user = new User();
+            $new_user->id = $id;
+            $new_user->firstname = $user->name;
+            $new_user->email = $user->email;
+            $new_user->password = Str::random(10);
+            $new_user->save();
+
+            Auth::login($new_user);
+            return redirect()->intended('/');
         }
+        // try {
+        // } catch (Exception $e) {
+        //     dd($e->getMessage());
+        //     // return redirect()->back();
+        // }
     }
 }
