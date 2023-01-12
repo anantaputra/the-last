@@ -28,7 +28,7 @@ class GoogleController extends Controller
         } else {
             $usr = User::latest()->first();
             if($usr){
-                $id = explode('-', $user->id_user);
+                $id = explode('-', $usr->id_user);
                 $urutan = (int) $id[1];
                 $urutan++;
             } else {
