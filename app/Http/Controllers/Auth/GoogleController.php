@@ -21,7 +21,7 @@ class GoogleController extends Controller
     {
         $user = Socialite::driver('google')->user();
         $check_user = User::where('email', $user->email)->first();
-        // return $check_user;
+        
         if($check_user){
             Auth::login($check_user);
             return redirect()->intended('/');
@@ -38,7 +38,7 @@ class GoogleController extends Controller
 
             $new_user = new User();
             $new_user->id_user = $id;
-            $new_user->firstname = $user->name;
+            $new_user->nama_depan = $user->name;
             $new_user->email = $user->email;
             $new_user->password = Str::random(10);
             $new_user->save();
