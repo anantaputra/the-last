@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
@@ -15,6 +16,7 @@ class GoogleController extends Controller
 
     public function handleGoogleCallback()
     {
-        return 'hai';
+        $user = Socialite::driver('google')->user();
+        return $user->email;
     }
 }
