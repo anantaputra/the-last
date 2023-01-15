@@ -38,6 +38,7 @@
     
             {{-- sign up form --}}
             <form class="px-8 pt-8 mb-4" method="POST" action="">
+                @csrf
                 <div class="flex space-x-4 mb-4">
                     <input class="appearance-none outline-none border-0 bg-gray-200 rounded-md w-full h-12 py-2 px-3 text-gray-700 leading-tight hover:bg-white hover:border-white hover:ring-2 hover:ring-rose-500 hover:duration-500 focus:bg-white focus:ring focus:ring-red-300 focus:border-red-300" id="firstname" type="text" name="firstname" required autocomplete="off" placeholder="Nama Depan">
                     @error('firstname')
