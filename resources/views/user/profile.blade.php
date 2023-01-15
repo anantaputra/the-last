@@ -58,7 +58,7 @@
                     ?>
                     <span>{{ $email }}</span>
                     @if (auth()->user()->email_verified_at == null)
-                        <span><a href="#" class="text-blue-600 underline">verifikasi email</a></span>
+                        <span><a href="{{ route('verification.send') }}" class="text-blue-600 underline">verifikasi email</a></span>
                     @else
                         <span><a href="" class="text-blue-600 underline">ubah</a></span>
                     @endif
