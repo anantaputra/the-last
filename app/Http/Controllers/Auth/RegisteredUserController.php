@@ -31,21 +31,43 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['nullable', 'string', 'max:255'],
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ], [
+            'required' => ':attribute harus diisi',
+            'unique' => ':attribute sudah digunakan',
+            'min' => ':attribute mininal :min karakter',
+            'confirmed' => ':attribute tidak cocok'
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = User::latest()->first();
+        if($user){
+            $id_user = explode('-', $user->id_user);
+            $urutan = (int) $id_user[1];
+            $urutan++;
+        } else {
+            $urutan = 1;
+        }
+        $id_user = 'USR-' . sprintf("%05s", $urutan);
+
+        $register = new User();
+        $register->id_user = $id_user;
+        $register->nama_depan = $request->firstname;
+        $register->nama_belakang = $request->lastname;
+        $register->email = $request->email;
+        $register->password = bcrypt($request->password);
+        $register->save();
 
         event(new Registered($user));
 
-        Auth::login($user);
+        $user = Auth::login($register);
 
-        return redirect(RouteServiceProvider::HOME);
+        if($user){
+            return redirect()->route('home');
+        }
+
+        return redirect()->route('register');
     }
 }
