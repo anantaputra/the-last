@@ -61,12 +61,7 @@
                     </svg>
       
                   <span class="ml-3 text-sm font-medium"> Tagihan </span>
-                  @php
-                      $jmlTransaksi = App\Http\Controllers\User\TagihanUserController::jmlTagihan();
-                  @endphp
-                  @if ($jmlTransaksi > 0)
-                  <span class="inline-flex justify-center items-center p-3 ml-3 w-3 h-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full">{{ $jmlTransaksi }}</span>
-                  @endif
+                  
                 </a>
       
                 <a href="{{ route('user.riwayat') }}" class="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 {{ Request::is('user/riwayat') ? 'bg-gray-100 text-gray-700' : '' }}">

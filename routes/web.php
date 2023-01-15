@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pages\HomeController;
 use App\Http\Controllers\Auth\GoogleController;
-use App\Http\Controllers\User\ProfilController;
-use App\Http\Controllers\Pages\KontakController;
-use App\Http\Controllers\Pages\ProdukController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\Pages\ContactController;
+use App\Http\Controllers\Pages\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,17 +20,17 @@ use App\Http\Controllers\Pages\ProdukController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('detail/{id}', [HomeController::class, 'detail'])->name('detail');
-Route::get('produk', [ProdukController::class, 'index'])->name('produk');
-Route::get('kontak', [KontakController::class, 'index'])->name('kontak');
-Route::post('pesan-kirim', [KontakController::class, 'simpan'])->name('pesan.kirim');
+Route::get('produk', [ProductController::class, 'index'])->name('produk');
+Route::get('kontak', [ContactController::class, 'index'])->name('kontak');
+Route::post('pesan-kirim', [ContactController::class, 'simpan'])->name('pesan.kirim');
 Route::get('google', [GoogleController::class, 'redirectToGoogle'])->name('google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
 
 Route::prefix('user')->name('user')->group(function () {
     Route::prefix('profil')->name('.profil')->group(function () {
-        Route::get('/', [ProfilController::class, 'index']);
-        Route::post('simpan', [ProfilController::class, 'simpan'])->name('.simpan');
-        Route::post('foto', [ProfilController::class, 'foto'])->name('.foto');
+        Route::get('/', [ProfileController::class, 'index']);
+        Route::post('simpan', [ProfileController::class, 'simpan'])->name('.simpan');
+        Route::post('foto', [ProfileController::class, 'foto'])->name('.foto');
     });
     Route::prefix('alamat')->name('.alamat')->group(function(){
         Route::get('/', [AlamatController::class, 'index']);
