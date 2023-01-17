@@ -37,7 +37,7 @@
             <div class="block mb-6 space-y-2">
                 <label for="email" class="mb-2 mt-2 text-sm font-medium ">Email</label>
                 <div class="w-5/6 flex space-x-2">
-                    <?php 
+                    @php 
                         $email = auth()->user()->email;
                         $email = explode('@', $email);
                         $dns = $email[1];
@@ -55,10 +55,10 @@
                             }
                             $email = substr($email, 0, 2).$bin.'@'.$dns;
                         }
-                    ?>
+                    @endphp
                     <span>{{ $email }}</span>
                     @if (auth()->user()->email_verified_at == null)
-                        <span><a href="{{ route('verification.send') }}" class="text-blue-600 underline">verifikasi email</a></span>
+                        <span><a role="button" onclick="verifikasi()" class="text-blue-600 underline">verifikasi</a></span>
                     @else
                         <span><a href="" class="text-blue-600 underline">ubah</a></span>
                     @endif
@@ -139,6 +139,20 @@
 </div>
 
 <script>
+    function verifikasi() {
+        $.ajax({
+            url: "{{ route('verification.send') }}",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            success: function (data) {
+                console.log(data)
+                console.log('kirim')
+            }
+        })
+    }
+    
     var uploadProfil = document.querySelector('input[type=file][name=profil]');
     uploadProfil.onchange = function(){
         if(uploadProfil.files.length != 0){
