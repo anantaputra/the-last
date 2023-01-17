@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
@@ -43,6 +44,8 @@ class GoogleController extends Controller
                 $new_user->email = $user->email;
                 $new_user->password = Str::random(10);
                 $new_user->save();
+
+                event(new Registered($user));
     
                 Auth::login($new_user);
                 return redirect()->route('home');
