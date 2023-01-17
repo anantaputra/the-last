@@ -28,7 +28,7 @@ class GoogleController extends Controller
                 Auth::login($check_user);
                 return redirect()->route('home');
             } else {
-                $usr = User::latest()->first();
+                $usr = User::orderBy('id_user', 'DESC')->first();
                 if($usr){
                     $id = explode('-', $usr->id_user);
                     $urutan = (int) $id[1];
